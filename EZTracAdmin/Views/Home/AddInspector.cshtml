@@ -1,0 +1,94 @@
+﻿@model Inspector
+@{
+    ViewBag.Title = "AddInspector";
+}
+
+
+<div>
+    <div class="container">
+        <div class="row justify-content-sm-start">
+            <div class="col col-4" style="padding-left: 0">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("Index", "Home")">Admin Home:</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("ReOpenSRO", "Home")">Re-Open RSO</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("DeleteEligibilityAppliedAndResetStatus", "Home")">Delete Eligibility Applied and Reset Status</a>
+                    <a class="list-group-item list-group-item-action active" style="padding: 3px 10px" href="@Url.Action("AddInspector", "Home")">Add Inspector</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddNewVendorAndVendorPool", "Home")">Add New Vendor and Vendor Pool</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("ChangeCRAStatusToInspecting", "Home")">Change CRA Status to Inspecting</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddVendorCodeToVendorsTable", "Home")">Add Vendor Code</a>
+                </div>
+            </div>
+            <div class="col col-sm">
+                <h2>Add Inspector</h2>
+                @if (TempData["AlertMessage"] != null)
+                {
+                    <div class="alert alert-success" style="margin-bottom:0">
+                        <strong>Success!</strong> @TempData["AlertMessage"]
+                    </div>
+                }
+                @using (Html.BeginForm())
+                {
+                    <br />
+                    <form action="AddInspector" method="post">
+                        <table>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.initials, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Enter Initials: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Html.TextBoxFor(i => i.initials, new { @class = "form-control", @maxlength = "20", required = "required" , style = "border-color:darkgray" })</td>
+                            </tr>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.firstName, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">First Name: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Html.TextBoxFor(i => i.firstName, new { @class = "form-control", @maxlength = "20", required = "required" , style = "border-color:darkgray" })</td>
+                            </tr>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.lastName, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Last Name: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Html.TextBoxFor(i => i.lastName, new { @class = "form-control", @maxlength = "20", required = "required" , style = "border-color:darkgray" })</td>
+                            </tr>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.location, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Location: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Html.DropDownListFor(i => i.location, new SelectList(Enum.GetValues(typeof(Location))), "Select Location", new { @class = "form-control", required = "required", style = "border-color:darkgray" })</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2" style="padding-bottom: 15px; float: right"><input type="submit" class="btn btn-info" value="Add Inspector" /></td>
+                            </tr>
+                        </table>
+                    </form>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+

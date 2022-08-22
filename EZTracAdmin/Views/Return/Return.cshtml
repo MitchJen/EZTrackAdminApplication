@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Return Screen";
+}
+
+@model EZTracAdminRSC.Controllers.ClaimsResponse
+
+<div class="jumbotron">
+    <h1>EmpowerID OAuth Testing App</h1>
+
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Test app</h2>
+    </div>
+</div>
+
+<form method="post" action="">
+
+    <div class="form-group">
+        <label for="claims-text">Claims Text</label>
+        <textarea class="form-control" id="ReturnClaimsText" asp-for="ClaimsText" rows="10"></textarea>
+    </div>
+
+</form>

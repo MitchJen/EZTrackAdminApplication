@@ -1,0 +1,108 @@
+﻿
+@model SRO
+@{
+    ViewBag.Title = "ReOpenSRO";
+}
+
+<div>
+    <div class="container">
+        <div class="row justify-content-sm-start">
+            <div class="col col-4" style="padding-left: 0">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("Index", "Home")">Admin Home:</a>
+                    <a class="list-group-item list-group-item-action active" style="padding:3px 10px" href="@Url.Action("ReOpenSRO", "Home")">Re-Open SRO</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("DeleteEligibilityAppliedAndResetStatus", "Home")">Delete Eligibility Applied and Reset Status</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddInspector", "Home")">Add Inspector</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddNewVendorAndVendorPool", "Home")">Add New Vendor and Vendor Pool</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("ChangeCRAStatusToInspecting", "Home")">Change CRA Status to Inspecting</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddVendorCodeToVendorsTable", "Home")">Add Vendor Code</a>
+                </div>
+            </div>
+            <div class="col col-sm">
+                <h2>Re Open SRO</h2>
+                @if (TempData["AlertMessage"] != null)
+                {
+                    <div class="alert alert-success" style="margin-bottom:0">
+                        <strong> Success ! </strong>@TempData["AlertMessage"]
+                    </div>
+                }
+                @if ((TempData["ErrorMessage"] != null) && (TempData["AlertMessage"] == null))
+                {
+                    <div class="alert alert-danger" style="margin-bottom:0">
+                        <strong>Error: </strong>@TempData["ErrorMessage"]
+                    </div>
+                }
+                <div class="container">
+                    <form class="input-form" id="open_SRO_form" method="post" action="">
+                        <div class="form-group row" style="margin-bottom:0">
+                            <div class="col-sm-9 mb-1" style="margin-top: 20px; margin-bottom: 0">
+                                <h6 style="margin-bottom: 0"><u>SRO Id:</u></h6>
+                            </div>
+                        </div>
+
+                        <div id="input_group">
+                            <div class="form-group row" id="input_row">
+                                <div class="col-sm-6 mb-1">
+                                    <input class="form-control" style="border-color:darkgray" name="SROId" id="SROId" type="number" min="@Model.minId" max="@Model.maxId" placeholder="ex. 4542" required />
+                                </div>
+                                <div class="col-sm-3 mb-1 d-grid">
+                                    <button class="btn btn-success add_item_button" id="add_item_button">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row align-content-end">
+                            <div class="col-sm-3 mb-1 d-grid">
+                                <button class="btn btn-info" type="submit" value="Save" id="submit" name="save">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const inputs = ["10"];
+
+        $("#add_item_button").click(function (e) {
+            e.preventDefault();
+            $("#input_group").prepend('<div class="form-group row" id="input_row">'
+                +'<div class="col-sm-6 mb-1">'
+                +'<input class="form-control" style="border-color:darkgray" name="SROId" id="SROId" type="number" min="@Model.minId" max="@Model.maxId" placeholder="ex. 4542" required />'
+                +'</div>'
+                +'<div class="col-sm-3 mb-1 d-grid">'
+                +'<button class="btn btn-danger remove_item" id="remove_item">Remove</button>'
+                +'</div>'
+                +'</div>'
+            );
+        });
+
+        $(document).on('click', '.remove_item',function (e) {
+            e.preventDefault();
+            let row_item = $(this).parent().parent();
+            $(row_item).remove();
+            x--;
+        });
+
+        $("#submit").click(function () {
+            var list = [];
+            let text = "";
+
+            $("form#open_SRO_form input[type=number]").each(function () {
+                var input = $(this);
+                text = text.concat(",", input.val());
+                list.push(input.val());
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/ReOpenSRO",
+                data: { 'listKey': list },
+                cache: false
+            });
+        });
+    });
+</script>
