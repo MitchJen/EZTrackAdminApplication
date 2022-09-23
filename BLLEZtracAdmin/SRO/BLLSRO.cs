@@ -12,7 +12,7 @@ namespace BLLEZtracAdmin
     public class BLLSRO
     {
         // Connection to the database
-        static string _connectionString = "Data Source = sql-t-ppdeztrac.na.paccar.com; Initial Catalog = EZTracTest; User Id = appEZTracUser; Password=eZ@pp073109; MultipleActiveResultSets=True;";
+        static string _connectionString = "here";
         DBManager db = new DBManager(DataProvider.SqlServer, _connectionString
             );
 
