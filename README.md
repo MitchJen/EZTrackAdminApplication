@@ -94,4 +94,4 @@
 
 # Maintainers
 Author:
-	* Mitchell D. Jensen (Summer 2022)
+	Mitchell D. Jensen (Summer 2022)
