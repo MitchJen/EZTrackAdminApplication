@@ -10,8 +10,9 @@ namespace BLLEZtracAdmin
     public class BLLVendor
     {
         // Connection to the database
+        string connectionString = "here";
         DBManager db = new DBManager(DataProvider.SqlServer,
-            "Data Source = sql-t-ppdeztrac.na.paccar.com; Initial Catalog = EZTracTest; User Id = appEZTracUser; Password=eZ@pp073109; MultipleActiveResultSets=True;");
+            connectionString);
         
 
 
