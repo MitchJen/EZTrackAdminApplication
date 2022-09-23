@@ -92,6 +92,6 @@
 	- Is the Configuration of the authentication process correct.
 	- Don't worry it hasn't been implemented yet. :'(
 
-# Maintainers
+## Maintainers
 Author:
 	Mitchell D. Jensen (Summer 2022)
