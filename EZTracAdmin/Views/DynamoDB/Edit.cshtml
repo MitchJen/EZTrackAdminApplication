@@ -1,0 +1,113 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model EZTracAdminRSC.Models.Dealer
+
+@{
+}
+
+<div>
+    <div class="container">
+        <div class="row justify-content-sm-start">
+            <div class="col col-4" style="padding-left: 0">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("Index", "Home")">Admin Home:</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("ReOpenSRO", "Home" )">Re-Open RSO</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddInspector", "Home")">Add Inspector</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddNewVendor", "Home")">Add New Vendor</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddVendorPool", "Home")">Add New Vendor Pool</a>
+                    <a class="list-group-item list-group-item-action active" style="padding: 3px 10px" href="@Url.Action("DealerList", "DynamoDB")">Dealer List</a>
+                </div>
+            </div>
+            <div class="col col-sm">
+                <h2>Edit Dealer</h2>
+                @if (TempData["AlertMessage"] != null)
+                {
+                    <div class="alert alert-success" style="margin-bottom:0">
+                        <strong>Success!</strong> @TempData["AlertMessage"]
+                    </div>
+                }
+                @using (Html.BeginForm())
+                {
+                    <br />
+                    <form action="UpdateDealer" method="post">
+                        <table>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.DbsId, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Dbs Id: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">
+                                    <input type="hidden" name="oldDbsId" value="@Model.DbsId" />
+                                    @Html.TextBoxFor(i => i.DbsId, new { @class = "form-control", required = "required", style = "border-color:darkgray" })
+                                </td>
+                            </tr>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.DealerId, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Dealer Id: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">
+                                    <input type="hidden" name="oldDealerId" value="@Model.DealerId" />
+                                    @Html.TextBoxFor(i => i.DealerId, new { @class = "form-control", required = "required", style = "border-color:darkgray" })
+                                </td>
+                            </tr>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.BaseUrl, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Base Url: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Html.TextBoxFor(i => i.BaseUrl, new { @class = "form-control", required = "required", style = "border-color:darkgray" })</td>
+                            </tr>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(i => i.SubscriptionId, "", new { @class = "text-danger" })</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="padding-bottom: 15px">Subscription Id: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Html.TextBoxFor(i => i.SubscriptionId, new { @class = "form-control", style = "border-color:darkgray" })</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2" style="padding-bottom: 30px; float: right">
+                                    <button class="btn btn-danger hBack" type="button">Back</button>
+                                    <input type="submit" class="btn btn-info" value="Update Dealer" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $(".hBack").on("click", function (e) {
+        e.preventDefault();
+        window.history.back();
+    });
+</script>

@@ -1,0 +1,67 @@
+﻿@model EZTracAdminRSC.Models.Dealer
+
+@{
+}
+
+<style>
+    table {
+        width: 100%;
+    }
+
+    td {
+        word-break: break-all;
+    }
+</style>
+
+<div>
+    <div class="container">
+        <div class="row justify-content-sm-start">
+            <div class="col col-4" style="padding-left: 0">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("Index", "Home")">Admin Home:</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("ReOpenSRO", "Home" )">Re-Open RSO</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddInspector", "Home")">Add Inspector</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddNewVendor", "Home")">Add New Vendor</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddVendorPool", "Home")">Add New Vendor Pool</a>
+                    <a class="list-group-item list-group-item-action active" style="padding: 3px 10px" href="@Url.Action("DealerList", "DynamoDB")">Dealer List</a>
+                </div>
+            </div>
+            <div class="col col-7">
+                <h2>View Dealer</h2>
+                    <br />
+                        <table class="table table-striped table-bordered" style="width: 400px">
+                            <tr>
+                                <td class="font-weight-bold" style="padding-bottom: 15px; width: 100px;">Dbs Id: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px">@Model.DbsId</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold" style="padding-bottom: 15px; width: 100px;">Dealer Id: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px; width: 200px;">@Model.DealerId</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold" style="padding-bottom: 15px; width: 100px;">Base Url: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px; width: 200px;">@Model.BaseUrl</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold" style="padding-bottom: 15px; width: 120px;">Subscription Id: </td>
+                                <td style="padding-bottom: 15px; padding-left: 15px; width: 180px;">@Model.SubscriptionId</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2" style="padding-bottom: 5px; float: right">
+                                    <button class="btn btn-danger hBack" type="button">Back</button>
+                                </td>
+                            </tr>
+                        </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $(".hBack").on("click", function (e) {
+        e.preventDefault();
+        window.history.back();
+    });
+</script>

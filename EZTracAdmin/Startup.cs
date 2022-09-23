@@ -41,7 +41,7 @@ namespace EZTracAdminRSC
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
             .AddCookie(options => {
-     //           options.LoginPath = "/Account/Login/";
+            // options.LoginPath = "/Account/Login/";
             })
             .AddOpenIdConnect(options =>
             {
@@ -63,17 +63,32 @@ namespace EZTracAdminRSC
                 //Change later!
                 options.ProtocolValidator.RequireNonce = false;
                 options.GetClaimsFromUserInfoEndpoint = false;
-               
-                options.CallbackPath = Configuration["AppSettings:callBackURL"];
-
-               
                 
+                options.CallbackPath = Configuration["AppSettings:callBackURL"];
             }
             );
             services.AddDataProtection();
             services.Configure<OidcOptions>(Configuration.GetSection("oidc"));
-        }
 
+            // services.Configure<AWS>(Configuration.GetSection("AWS"));
+
+            /*
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "dynamodb_sample", Version = "v1" });
+            });
+
+            var credentials = new BasicAWSCredentials("(Access Key Id)", "(Secret Value)");
+            var config = new AmazonDBConfig()
+            {
+                RegionEndpoint = RegionEndpoint.USWest2;
+            };
+            var client = new AmazonDBClient(credentials, config);
+            services.AddSingleton<IAmazonDynamoDB>(client);
+            services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
+            */
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -88,20 +103,25 @@ namespace EZTracAdminRSC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseAuthentication();
             
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:2557/"  /* et. al. */)
+                builder.WithOrigins("http://localhost:44592/"  /* et. al. */)
                 .AllowAnyHeader() // allow 'Authentication' headers, et. al.
                 .AllowAnyMethod() // allow GET, SET, OPTIONS, et. al.
                                     // .....
-           );
-             
-            //app.UseHttpsRedirection();
+           );   // could also be an issue
+            
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseCookiePolicy(new CookiePolicyOptions()
+            {
+                MinimumSameSitePolicy = (Microsoft.AspNetCore.Http.SameSiteMode)SameSiteMode.None
+            }); // check this section
             app.UseRouting();
-            app.UseAuthentication();
             app.UseAuthorization();
+
+            // app.UseHttpsRedirection();
 
             // This is needed if running behind a reverse proxy
             // like ngrok which is great for testing while developing
@@ -116,8 +136,6 @@ namespace EZTracAdminRSC
                 endpoints.MapDefaultControllerRoute();
 
             });
-
         }
     }
-
 }

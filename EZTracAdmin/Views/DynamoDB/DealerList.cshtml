@@ -1,0 +1,152 @@
+﻿@model EZTracAdminRSC.Models.DealerList
+@{
+    ViewBag.Title = "DealerList";
+}
+
+<style>
+    form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .form.contents > * {
+        width: 30%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    .pagination {
+        display: inline-block;
+    }
+    .pagination input {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .pagination button {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+</style>
+<div>
+    <div class="container">
+        <div class="row justify-content-sm-start">
+            <div class="col col-4" style="padding-left: 0">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action(" Index", "Home" )">Admin Home:</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action(" ReOpenSRO", "Home" )">Re-Open RSO</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action(" AddInspector", "Home" )">Add Inspector</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action(" AddNewVendor", "Home" )">Add New Vendor</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action(" AddVendorPool", "Home" )">Add New Vendor Pool</a>
+                    <a class="list-group-item list-group-item-action active" style="padding: 3px 10px" href="@Url.Action(" DealerList", "DynamoDB" )">Dealer List</a>
+                </div>
+            </div>
+            <div class="col col-7">
+                <h2>Dealer List</h2>
+
+                @if ((TempData["ErrorMessage"] != null))
+                {
+                <div class="alert alert-danger" style="margin-bottom:0">
+                    <strong>Error: </strong>@TempData["ErrorMessage"]
+                </div>
+                }
+                <form method="post">
+                    <a class="btn btn-success" href="@Url.Action(" Add", "DynamoDB" )" style="margin-bottom: 15px">Add New</a>
+
+                    <input class="form-control" style="border-color: darkgray; width: 100px; margin-bottom: 15px" name="searchDbsId" id="searchDbsId" type="text" placeholder="Dbs Id" maxlength="5" />
+                    <input class="form-control" style="border-color: darkgray; width: 100px; margin-bottom: 15px" name="searchDealerId" id="searchDealerId" type="text" placeholder="Dealer Id" maxlength="5" />
+                    <input type="submit" class="btn btn-info" style="margin-bottom: 15px" id="Search" value="Search" />
+                </form>
+                <div class="justify-content-center" style="overflow-x:auto; margin-bottom: 15px">
+                    <table class="table table-striped table-hover table-bordered table-sm">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Dealers[0].DbsId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Dealers[0].DealerId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Dealers[0].BaseUrl)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Dealers[0].SubscriptionId)
+                            </th>
+                        </tr>
+
+                        @foreach (var dealer in Model.Dealers)
+                        {
+                        <tr>
+                            <td class="justify-content-center">
+                                @Html.ActionLink("Edit", "Edit", new { dbsId = dealer.DbsId, dealerId = dealer.DealerId, baseUrl = dealer.BaseUrl, subscriptionId = dealer.SubscriptionId }, new { @class = "btn-sm btn-danger" })
+                                @Html.ActionLink("Details", "View", new { dbsId = dealer.DbsId, dealerId = dealer.DealerId, baseUrl = dealer.BaseUrl, subscriptionId = dealer.SubscriptionId }, new { @class = "btn-sm btn-primary" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => dealer.DbsId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => dealer.DealerId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => dealer.BaseUrl)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => dealer.SubscriptionId)
+                            </td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+                <form class="pagination" method="post">
+                    <div class="form-inline justify-content-center" style="margin-bottom: 15px">
+                        @if (Model.CurrentPage > 1)
+                        {
+                        <button class="btn btn-info hBack" type="button">&#8249;</button>
+                        }
+                        else
+                        {
+                        <button class="btn btn-info hBack disabled" type="button">&#8249;</button>
+                        }
+
+                        <span class="page-link" style="padding-top: 5px; padding-bottom: 5px;">@Model.CurrentPage</span>
+                        @if (TempData["DbsSearch"] != null && TempData["DealerSearch"] != null)
+                        {
+                        <input type="hidden" name="search" value="DbsDealerId" />
+
+                        }
+                        else if (TempData["DbsSearch"] != null && TempData["DealerSearch"] == null)
+                        {
+                        <input type="hidden" name="search" value="DbsId" />
+                        <input type="hidden" name="searchValue" value="@Model.Dealers[0].DbsId" />
+                        }
+                        else if (TempData["DbsSearch"] == null && TempData["DealerSearch"] != null)
+                        {
+                        <input type="hidden" name="search" value="DealerId" />
+                        <input type="hidden" name="searchValue" value="@Model.Dealers[0].DealerId" />
+                        }
+                        <input type="hidden" name="lastKey" value="@Model.Dealers[Model.Dealers.Count-1].DealerId" />
+                        <input type="hidden" name="page" value="@Model.CurrentPage" />
+                        @if (Model.CurrentPage != Model.Pages)
+                        {
+                        <input type="submit" class="btn btn-info" id="Next" name="Next" value="&#8250;" />
+                        }
+                        else
+                        {
+                        <input type="submit" class="btn btn-info disabled" id="Next" value="&#8250;" />
+                        }
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
