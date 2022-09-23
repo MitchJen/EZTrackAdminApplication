@@ -11,11 +11,10 @@
                 <div class="list-group">
                     <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("Index", "Home")">Admin Home:</a>
                     <a class="list-group-item list-group-item-action active" style="padding:3px 10px" href="@Url.Action("ReOpenSRO", "Home")">Re-Open SRO</a>
-                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("DeleteEligibilityAppliedAndResetStatus", "Home")">Delete Eligibility Applied and Reset Status</a>
                     <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddInspector", "Home")">Add Inspector</a>
-                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddNewVendorAndVendorPool", "Home")">Add New Vendor and Vendor Pool</a>
-                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("ChangeCRAStatusToInspecting", "Home")">Change CRA Status to Inspecting</a>
-                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddVendorCodeToVendorsTable", "Home")">Add Vendor Code</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddNewVendor", "Home")">Add New Vendor</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("AddVendorPool", "Home")">Add New Vendor Pool</a>
+                    <a class="list-group-item list-group-item-action" style="padding: 3px 10px; background-color: #cccccc" href="@Url.Action("DealerList", "DynamoDB")">Dealer List</a>
                 </div>
             </div>
             <div class="col col-sm">
@@ -63,6 +62,7 @@
 </div>
 
 <script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/jquery.validate.js"></script>
 <script>
     $(document).ready(function () {
         const inputs = ["10"];
@@ -87,6 +87,16 @@
             x--;
         });
 
+        $("#open_SRO_form").validate({
+            rules: {
+                SROId: {
+                    required: true,
+                    min: @Model.minId,
+                    max: @Model.maxId
+                }
+            }
+        });
+
         $("#submit").click(function () {
             var list = [];
             let text = "";
@@ -97,12 +107,15 @@
                 list.push(input.val());
             });
 
-            $.ajax({
-                type: "POST",
-                url: "/Home/ReOpenSRO",
-                data: { 'listKey': list },
-                cache: false
-            });
+            var isvalid = $("#open_SRO_form").validate();
+            if (!isvalid) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/ReOpenSRO",
+                    data: { 'listKey': list },
+                    cache: false
+                });
+            }
         });
     });
 </script>

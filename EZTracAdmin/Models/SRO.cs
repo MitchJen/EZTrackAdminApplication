@@ -9,6 +9,7 @@ namespace EZTracAdminRSC.Models
 {
     public class SRO
     {
+        // min and max values of the SRO Id values
         public int minId = 0;
         public int maxId = 9999;
     }
